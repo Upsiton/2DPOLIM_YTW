@@ -4,7 +4,6 @@ Created on Thu Dec 24 20:04:55 2020
 Finished the beta version on 10:38 Wed. Jan. 06 2020
 @author: Yutong
 
-This script is for actual running. (R version)
 """
 #%% Initialization
 
