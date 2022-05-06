@@ -12,10 +12,10 @@ on 25.02.2021
 
 import numpy as np
 
-# read power data of measurement (Y) (when rotating):
+# read power data of measurement (Y data) (when rotating):
 y_data1 = powerdata.iloc[t_0_idx:t_end_idx+1,1].to_numpy()
 
-# read angles (X) (when rotating):
+# read angles (X data) (when rotating):
 x_data1 = powerdata.iloc[t_0_idx:t_end_idx+1,4].to_numpy()
 
 # And plot the original data
@@ -35,15 +35,13 @@ params, params_covariance = optimize.curve_fit(fit_power_angle_func, x_data1, y_
 
 print(params)
 
-r_spd_fit = round(90/params[1], 3) 
-theta_0_fit = round(params[2], 3)
+r_spd_fit = round(90/params[1], 3) # rotation speed from fitting
+theta_0_fit = round(params[2], 3) # AOP (initial phase) result from fitting
 
 print("theta_0 by fitting: {} degree\nr_spd by fitting: {} degree/s".format([theta_0_fit,90+theta_0_fit],r_spd_fit))
 
 print("\ntheta_0 by localization of Max./min.: {} degree\nr_spd by localization of Max./min.: {} degree/s".format([pw_pol_angle_min_mean,pw_pol_angle_max_mean,pw_pol_angle_all_count_mean],r_spd))
 print("\ntheta_0 by estimation of inertial phase angle: {} degree\n".format(round(theta_0,3)))
-
-# fit_power_angle_func(x, params[0], params[1], params[2], params[3])
 
 ############################################################
 # And plot the resulting curve on the data
@@ -55,8 +53,11 @@ plt.plot(x_data1, fit_power_angle_func(x_data1, params[0], params[1], params[2],
 plt.legend(loc="best")
 plt.show()
 
+############################################################
 
-############################## Results:
+
+    
+    
 ##################### Some tests ############
 # def fit_power_angle_func(x, a, b, c):
 #     return a/2+a/2*np.cos(2*b*(np.pi/180)*x+2*(np.pi/180)*c)
