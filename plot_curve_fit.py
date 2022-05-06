@@ -6,11 +6,8 @@ Inspired by: 1.6.12.8. Curve fitting — Scipy lecture notes
 https://scipy-lectures.org/intro/scipy/auto_examples/plot_curve_fit.html#sphx-glr-download-intro-scipy-auto-examples-plot-curve-fit-py
 on 25.02.2021
 ===============
-
-Demos a simple curve fitting
 """
 
-#%% ###########################################################
 # Fit the Power v.s. Angle curve. Run this script after running "Get_Pol_Angle.py".
 
 import numpy as np
