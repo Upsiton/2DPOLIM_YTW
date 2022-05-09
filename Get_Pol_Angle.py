@@ -1,26 +1,32 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Dec 24 20:04:55 2020
-Finished the beta version on 10:38 Wed. Jan. 06 2020
-@author: Yutong
+Script for calculation of Angle of Polarization (AOP) in Polarization Measurement by Stepper-motor-driven Analyzer
 
+
+This script is for running the power meter data with a rotating polarization analyzer to calculate the AOP. The file name of
+data (.csv) is input in interactive way during running. The result (processed data, plottings) will be automatically saved in 
+the current working directory with given folder name. It can run with several data files and save the whole result as well. 
+
+
+Finished the beta version on March 2020
+@author: Yutong
 """
 #%% Initialization
 
-#reset #remove all defined variables; %reset -f #does the force action on the given command without prompting for yes/no.
-import os
-#os.chdir('D:\\ProgramFiles1\\Python38\\MyPy\\labwork\\Power meter\\20201204') #used to change the current working directory to specified path. use\\ to replace \
-#os.chdir('D:\\Yuton\\Documents\\Thorlabs\\Optical Power Monitor') #used to change the current working directory to specified path. use\\ to replace \
-os.chdir('D:\\Yuton\\Documents\\Thorlabs\\Optical Power Monitor\\2021011415')   # main LC char. data
-# os.chdir("D:\\Yuton\\Documents\\Thorlabs\\Optical Power Monitor\\Analysis\\unstablePeaks")  # Unstable peaks data on 20210111
 
-# # ### Get path via input:
+import os
+
+# Change the current working directory to specified path (e.g. location of sample data in folder "Samples").
+os.chdir('D:\\MyDocs\\PROG\\GitHub\\2DPOLIM_YTW\\Samples') 
+
+
+# ## Get path via input:
 # workdir = input("Please input the path of folder which contains CSV files:\n...")
 # os.chdir(workdir)
 
 # cwd = os.getcwd() 
 # print("Current working directory is:", cwd)
-# # ###
+# ##
 
 #Putting the imports at the top of the module: (Orininally in the Cell "Step 1")
 import pandas as pd
@@ -118,8 +124,6 @@ powerdata.reset_index(drop=True, inplace=True) # reset index start from 0; drop 
 powerdata=powerdata['Data'].str.split("; ", n=-1, expand=True) # split date&time and power according to delimiter;
 
 #read out time
-# import time
-# from datetime import datetime, timedelta
 
 t_int = datetime.strptime(powerdata.iloc[0,0], "%m/%d/%Y;%H:%M:%S.%f")# in numpy; initial time of measurement
 # Do it via ndarray, return t_sec, tim
@@ -383,10 +387,10 @@ print(f"Total rotation time given by selection: {t_total_rot} s")
 ### Step 3: Cal. angle from the given initial time of rotation:
 # total_cycle = 10 # Total number of cycles. Every 180 degree = 1 cycle
 # r_spd = 90.00 # rotation speed in [degree/s]
-#r_spd_correct = 0#-0.55456#-0.05621 #-0.25 # delta_velocity if needed to correct the set velocity
-#r_spd = r_spd + r_spd_correct # corrected velocity
-
+# r_spd_correct = 0 #-0.55456#-0.05621 #-0.25 # delta_velocity if needed to correct the set velocity
+# r_spd = r_spd + r_spd_correct # corrected velocity
 # r_spd_dev = 1800/20.1214 - r_spd
+
 r_spd_correct = round(180*total_cycle/t_total_rot,3) # corrected velocity; round to 3 decimal points
 r_spd_dev = round(r_spd_correct - r_spd,3) # delta_velocity if needed to correct the set velocity
 #print(r_spd_correct)
@@ -439,6 +443,7 @@ print("The rough estimation of polarization angle is: {} degree (unreliable).".f
 
 # decide do shift or not:
 # if 20<theta_0<70) do not shift; otherwise theta_0 is in 0+/-20 degree or 90+/-20 degree, do shift of 45 degree of subsection
+
 if (20<theta_0<70): # do not shift; {This part is mostly done on 2021.01.02}
     ## split original data into 10 cycles (180deg each) and store in a list "pw_cycles"; each element in the list is DataFrame-type and is a subsection of powerdata within a cycle. 
     pw_cycle=[]
@@ -530,6 +535,7 @@ else:
 
 #Add the offset of -180 deg around 0/180 border here: # on 2021.02.09
 #due to reference mechanism, changing in "pw_pol_angle_all" will change "pw_pol_angle_min_count" & "pw_pol_angle_max_count" as well. So, only need a single manipulation here
+
 if (True in (pw_pol_angle_all>=170)) and (True in (pw_pol_angle_all<=10)): # need to test two conditions, otherwise always get problem at border. Cuz only for angles crossing the border
     for i in range(len(pw_pol_angle_all)):
 
@@ -583,7 +589,6 @@ pw_pol_angle_all_count_std = round(np.nanstd(pw_pol_angle_all_count),2)
 print('Mean angle of all counted:', pw_pol_angle_all_count_mean) 
 print('Std of all counted:', pw_pol_angle_all_count_std,"\n")
 
-# up to here: @ 2021.01.06 5:26AM
 
 ########################################
 ### Plot new Power curve(Fig.3)
@@ -675,7 +680,7 @@ plt.savefig(savePath+"/"+file_name.replace(".csv", "_fig4_aglPw.png")) # save fi
 plt.savefig(savePath+"/"+file_name.replace(".csv", "_fig4_aglPw.svg")) 
 plt.show()
 
-# The above ploting is done @ 2021.01.06 10.31AM
+
 #*****************************************************************************#
 #%% Save & export result
 #start on 25.02.2021
@@ -899,8 +904,5 @@ else: # if no file exists, export
 
 powerdata_allResultRead = pd.read_csv(allResultFilePath)
 powerdata_allResultRead = pd.read_csv("D:\Yuton\Documents\Thorlabs\Optical Power Monitor\\2021011415\pwResult_210315\powerdata_allResult_210315.csv")
-
-# Complete on 07.03.2021 3:40
-# Updated: 1:31 AM March 8,2021. v0.9: Complete some code refactoring.
 
 #*****************************************************************************#
