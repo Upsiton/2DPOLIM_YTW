@@ -8,7 +8,7 @@ data (.csv) is input in interactive way during running. The result (processed da
 the current working directory with given folder name. It can run with several data files and save the whole result as well. 
 
 
-Finished the beta version on March 2020
+Finished the beta version on March 2021
 @author: Yutong
 """
 #%% Initialization
