@@ -10,4 +10,4 @@ The sample data (csv files) for running the "Get_Pol_Angle.py" is stored in the 
 Folder: Setup Control
 
 Contains home-created software for synchronization and system control of 2DPOLIM setup. 
-Arduino is used as the trigger source for synchronizing the laser, LC polarization rotator, and two cameras. Arduino, laser, and LC are controlled in Python by USB connections to the PC. 
+Arduino is used as the trigger source for synchronizing the laser, LC polarization rotator, and two cameras. Arduino, laser, and LC are fully controlled in Python by USB connections to the PC. 
