@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Script for calculation of Angle of Polarization (AOP) in Polarization Measurement by Stepper-motor-driven Analyzer
-
+ 
 
 This script is for running the power meter data with a rotating polarization analyzer to calculate the AOP. The file name of
 data (.csv) is input in interactive way during running. The result (processed data, plottings) will be automatically saved in 

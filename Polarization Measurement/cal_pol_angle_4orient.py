@@ -2,7 +2,7 @@
 """
 
 Script for Four-directional Measurement of Angle of Polarization (AOP).
-
+ 
 An alternative way to measure/cal. orientation of the polarization by the power 
 obtained from the analyzer oriented at two sets of orthogonal directions. (I_0 & I_90, I_45 & I_135)
 
