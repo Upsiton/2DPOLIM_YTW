@@ -1,5 +1,5 @@
 # 2DPOLIM_YTW
-The codes for my master's project "2D Polarization Fluorescence Imaging (2DPOLIM)". 
+The codes for my M.Sc. project "2D Polarization Fluorescence Imaging (2DPOLIM)". 
 
 Folder: Polarization Measurement
 Aiming for calculation in the polarization measurement.
