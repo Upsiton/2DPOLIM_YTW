@@ -22,12 +22,9 @@ import ctypes
 Functions in these libraries use the standard C calling convention, and are 
 assumed to return int.
 '''
-# LC_CMD_DLL = ctypes.WinDLL(r"D:\MyDocs\PROG\VS\source\repos\LC_CMD_DLL\x64\Debug\LC_CMD_DLL.dll")
-# LC_CMD_DLL = ctypes.CDLL(r"D:\MyDocs\PROG\VS\source\repos\LC_CMD_DLL\x64\Debug\LC_CMD_DLL.dll") # original directory
+# locate the folder where the dll files are stored.
 
 LC_CMD_DLL = ctypes.CDLL(r"D:\MyDocs\PROG\VS\source\repos\LC_CMD_DLL\files\LC_CMD_DLL.dll") 
-
-# LC_CMD_DLL = ctypes.CDLL(r"D:\2DPOLIM\Setup\codes\LC_D5020_DLL\LC_CMD_DLL.dll")  # locate the folder where the dll files are stored.
 
 # Acquire the function signature of C function: "char* LCCMD(char* lcCmdStr)" in LC_CMD_DLL.dll
 CppLCCMD = LC_CMD_DLL.LCCMD 
@@ -196,63 +193,66 @@ print("Return from LC:", LC_CMD_DLL.LCCMD(cmd1).decode("utf-8"))
 '''
 #%% Some commands
 
-# Go to certain state of LC
-PyLCCMD('state:3')
+# # Go to certain state of LC
+# PyLCCMD('state:3')
 
-# Query current state
-PyLCCMD('state:?')
+# # Query current state
+# PyLCCMD('state:?')
+
+# # Go to multi-state cycling mode
+# PyLCCMD("cyclp:1")
 
 #%% For Demonstration in the Thesis
 
-"""
-Script to call the c-program wrapper "LC_CMD_DLL.dll" which contains functions 
-to control the LC polarization retarder (Meadowlark Optics D5020) by sending 
-ASCII commands. 
+# """
+# Script to call the c-program wrapper "LC_CMD_DLL.dll" which contains functions 
+# to control the LC polarization retarder (Meadowlark Optics D5020) by sending 
+# ASCII commands. 
 
-By using ctypes library, the ASCII commands (binary string in python) can be 
-converted to C acceptable strings and passed to the function in c-program, and 
-the returned data is passed back. 
+# By using ctypes library, the ASCII commands (binary string in python) can be 
+# converted to C acceptable strings and passed to the function in c-program, and 
+# the returned data is passed back. 
 
-Created on Fri Jul  8 15:07:24 2022
+# Created on Fri Jul  8 15:07:24 2022
 
-@author: Yutong Wang
-"""
+# @author: Yutong Wang
+# """
 
-import ctypes
-"""
-Script to call the c-program wrapper "LC_CMD_DLL.dll" which contains functions 
-to control the LC polarization retarder controller (Meadowlark Optics D5020) by 
-sending ASCII commands. 
-"""
-# Load the DLL files (LC_CMD_DLL.dll and usbdrvd.dll) are stored:
-LC_CMD_DLL = ctypes.CDLL(r"D:\MyDocs\PROG\VS\source\repos\LC_CMD_DLL\files\LC_CMD_DLL.dll") 
+# import ctypes
+# """
+# Script to call the c-program wrapper "LC_CMD_DLL.dll" which contains functions 
+# to control the LC polarization retarder controller (Meadowlark Optics D5020) by 
+# sending ASCII commands. 
+# """
+# # Load the DLL files (LC_CMD_DLL.dll and usbdrvd.dll) are stored:
+# LC_CMD_DLL = ctypes.CDLL(r"D:\MyDocs\PROG\VS\source\repos\LC_CMD_DLL\files\LC_CMD_DLL.dll") 
 
-# Acquire the function signature of C++ function: "char* LCCMD(char* lcCmdStr)" in LC_CMD_DLL.dll
-try:
-    LC_CMD_DLL.LCCMD # access to the C++ function
-except:
-    print("Error in calling C++ function in LC_CMD_DLL.dll!!!")
+# # Acquire the function signature of C++ function: "char* LCCMD(char* lcCmdStr)" in LC_CMD_DLL.dll
+# try:
+#     LC_CMD_DLL.LCCMD # access to the C++ function
+# except:
+#     print("Error in calling C++ function in LC_CMD_DLL.dll!!!")
     
-## Define ctypes data types of argument & return:
-# Specify the data type (char * (NUL terminated)) of argument for the foreign C++ function. 
-LC_CMD_DLL.LCCMD.argtypes = [ctypes.c_char_p] 
-# Specify the data type (char * (NUL terminated)) of return for the foreign C++ function. 
-LC_CMD_DLL.LCCMD.restype = ctypes.c_char_p 
+# ## Define ctypes data types of argument & return:
+# # Specify the data type (char * (NUL terminated)) of argument for the foreign C++ function. 
+# LC_CMD_DLL.LCCMD.argtypes = [ctypes.c_char_p] 
+# # Specify the data type (char * (NUL terminated)) of return for the foreign C++ function. 
+# LC_CMD_DLL.LCCMD.restype = ctypes.c_char_p 
 
-## Define a function to sending ASCII command to LC controller (calling LC_CMD_DLL.LCCMD in C++ program LC_CMD_DLL.dll)
-def PyLCCMD(cmd):
-    """
-    Input: cmd - a string of ASCII command. e.g. "ver:?"
-    Returns: a string of response from LC controller
-    """
-    print("Send command:",cmd)
-    # Encode the string to bytes which is C-acceptable. i.e. "ver:?" to b"ver:?"
-    cmd = cmd.encode() 
-    # Send arguement cmd to function "char* LCCMD(char* lcCmdStr)" in c-program, and convert returned bytes to string
-    LCResp = LC_CMD_DLL.LCCMD(ctypes.c_char_p(cmd)).decode("utf-8")
+# ## Define a function to sending ASCII command to LC controller (calling LC_CMD_DLL.LCCMD in C++ program LC_CMD_DLL.dll)
+# def PyLCCMD(cmd):
+#     """
+#     Input: cmd - a string of ASCII command. e.g. "ver:?"
+#     Returns: a string of response from LC controller
+#     """
+#     print("Send command:",cmd)
+#     # Encode the string to bytes which is C-acceptable. i.e. "ver:?" to b"ver:?"
+#     cmd = cmd.encode() 
+#     # Send arguement cmd to function "char* LCCMD(char* lcCmdStr)" in c-program, and convert returned bytes to string
+#     LCResp = LC_CMD_DLL.LCCMD(ctypes.c_char_p(cmd)).decode("utf-8")
     
-    print("LC returns:",LCResp)
-    return LCResp
+#     print("LC returns:",LCResp)
+#     return LCResp
 
-# Run the function by sending command "ver:?" to query firmware version.
-print("Return from LC:", PyLCCMD("ver:?"))
+# # Run the function by sending command "ver:?" to query firmware version.
+# print("Return from LC:", PyLCCMD("ver:?"))
