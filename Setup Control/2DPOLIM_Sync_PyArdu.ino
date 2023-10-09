@@ -96,7 +96,7 @@ void setup() {
   pinMode(TRIGGER_1, OUTPUT);
   pinMode(TRIGGER_2, OUTPUT);
 
-  Serial.begin(115200);  // initialize serial communication at 9600 bits per second. 9600 or 115200
+  Serial.begin(115200);  // initialize serial communication at 9600 bits per second. 9600 or 115200; 115200 baud
   delay(100);            // initial waiting time after power on
 
   while (!Serial) {  //Indicates if the specified Serial port is ready. On the boards with native USB, if (Serial) (or if(SerialUSB) on the Due) indicates whether or not the USB CDC serial connection is open.
